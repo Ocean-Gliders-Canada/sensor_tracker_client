@@ -4,7 +4,7 @@ import json, requests, logging
 
 logger = logging.getLogger(__name__)
 
-from website.common.instruments_config import SENSOR_TRACKER_CONNECTOR, PAYLOAD
+from sensor_tracker_api.instruments_config import SENSOR_TRACKER_CONNECTOR, PAYLOAD
 
 try:
     import urllib.parse

@@ -13,6 +13,7 @@ pip-delete-this-directory.txt
 
 # General
 .DS_Store
+./*/.DS_Store
 .AppleDouble
 .LSOverride
 
@@ -38,3 +39,8 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
