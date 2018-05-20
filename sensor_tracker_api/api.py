@@ -177,6 +177,19 @@ class AccessApi(object):
 
         return result
 
+    def is_testing_mission(self, platform_name, start_time):
+
+        result =self.get_platform_deployment(platform_name, start_time)
+        if result[0]['testing_mission']:
+            result = True
+        else:
+            return False
+
+        if self.DEBUG:
+            logger.warning("is_testing_mission result {} ".format(result))
+
+        return result
+
     def insert_instrument(self, identifier, short_name, **kwargs):
         l = {"identifier": identifier, "short_name": short_name}
 
@@ -350,3 +363,14 @@ class AccessApi(object):
                 del dict[i]
 
         return dict
+
+
+# print(interface.get_output_sensors("otn200", "2017-12-16 14:57:24"))
+interface = AccessApi()
+# print(interface.get_deployment_instruments("otn200", "2017-12-16 14:57:24"))
+print(interface.is_testing_mission("dal556", "2016-01-22 17:26:00"))
+# print(interface.get_manufacturer(8))
+# sensor_tracker_api = AccessApi()
+# data_list = sensor_tracker_api.get_deployments("Slocum")
+# print(data_list)
+# print(sensor_tracker_api.get_mission_end_time("otn200", "2017-12-16 14:57:24"))
