@@ -1,0 +1,8 @@
+cryptography==2.2.1
+pycparser==2.18
+pytz==2018.4
+requests==2.18.4
+simplejson==3.13.2
+six==1.11.0
+urllib3==1.22
+
