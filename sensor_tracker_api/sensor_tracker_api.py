@@ -2,104 +2,27 @@
 # coding=utf-8
 import json, requests, logging
 
-from six.moves import urllib
-
 logger = logging.getLogger(__name__)
 
+from website.common.instruments_config import SENSOR_TRACKER_CONNECTOR, PAYLOAD
 
-class Config(object):
-    # This is default api link
-    SENSOR_TRACKER_CONNECTOR = 'http://bugs.ocean.dal.ca/sensor_tracker/api/'
-    SENSOR_TRACKER_LOCAL_URL = "http://127.0.0.1:8000/api/"
-    GLIDER_MODELS = ["Wave", "Slocum"]
+try:
+    import urllib.parse
+except:
+    from urlparse import urlparse
+    import urllib
 
 
 class AccessApi(object):
     def __init__(self, debug=None):
+        self.SensorTackerApi = SENSOR_TRACKER_CONNECTOR
 
         if debug:
             self.DEBUG = True
-            self.SensorTackerApi = Config.SENSOR_TRACKER_LOCAL_URL
         else:
-            self.SensorTackerApi = Config.SENSOR_TRACKER_CONNECTOR
             self.DEBUG = False
 
         self.token = None
-        self.user = None
-        self.deployment_cache = {}
-        self.password = None
-        self.GLIDER_MODELS = Config.GLIDER_MODELS
-
-    def check_auth(self):
-        if not self.token:
-            raise Exception("Provide authentication token or Provide (username, password), before use insert methods")
-
-    def set_authentication(self, content):
-        if type(content) is str:
-            self.token = content
-        elif type(content) is tuple:
-            self.user = content[0]
-            self.password = content[1]
-        else:
-            raise Exception("Either provide token string or user name and passowrd in format ('username', 'password')")
-        # Todo: create check token methods
-
-    def set_deplopyment_model(self, models):
-        self.GLIDER_MODELS = models
-
-    def __init_deployment_cache(self):
-        glider_models = Config.GLIDER_MODELS
-        deployment_list = []
-
-        for model in glider_models:
-            deployment_list.extend(self.get_deployments(model))
-
-        for deployment in deployment_list:
-            self.deployment_cache[deployment["deployment_number"]] = {"platform_name": 1, "start_time": 2,
-                                                                      "end_time": 3}
-
-    def set_deployment_number(self, num):
-        # Todo: Write the method to check the update
-        if type(num) is int:
-            deployemnt_number = num
-        elif type(num) is str:
-            try:
-                deployemnt_number = int(num)
-            except ValueError:
-                raise Exception("Deployment number is Integer")
-        else:
-            raise Exception("Deployment number is Integer")
-
-        if num in self.deployment_cache:
-            return self.deployment_cache[num]
-        else:
-            raise Exception("invalid deployment")
-
-    def get_sensors_on_platform(self, platform_name, start_time):
-        instrument = self.get_deployment_instruments(platform_name, start_time)
-
-        sensor_array = []
-
-        for i in instrument:
-            sensor = self.__parse_content("get_sensors", {"instrument_id": i["instrument"]["id"]})
-            sensor_array.extend(sensor)
-
-        if self.DEBUG:
-            logger.warning("get_sensors result {} ".format(sensor_array))
-        return sensor_array
-
-    def get_output_sensors(self, platform_name, start_time):
-        instrument = self.get_deployment_instruments(platform_name, start_time)
-
-        sensor_array = []
-
-        for i in instrument:
-            sensor = self.__parse_content("get_output_sensors", {"id": i["instrument"]["id"]})
-            sensor_array.extend(sensor)
-
-        if self.DEBUG:
-            logger.warning("get_output_sensors result {} ".format(sensor_array))
-        return sensor_array
 
     def get_deployments(self, model_name):
         platform_type = self.get_platform_type(model_name)
@@ -107,41 +30,27 @@ class AccessApi(object):
         result = []
 
         for i in platform_type:
-            result.extend(self.__parse_content("get_deployments/", {"platform__platform_type__model": i}))
+            result.extend(self.parse_content("get_deployments/", {"platform__platform_type__model": i}))
 
         if self.DEBUG:
             logger.warning("get_deployments result {} ".format(result))
 
         return result
 
-    def get_platform_by_type(self, model):
-        result = self.__parse_content("get_platform_deployments", {"model": model})
-
-        return result
-
-    def get_platform_deployment(self, platform_name, start_time):
-
-        result = self.__parse_content("get_platform_deployments", {"name": platform_name, "time": start_time})
-
-        if self.DEBUG:
-            logger.warning("get_platform_deployment result {} ".format(result))
-
-        return result
-
     def get_instruments(self, instrument_identifier):
 
-        result = self.__parse_content("get_instruments", {"identifier": instrument_identifier})
+        result = self.parse_content("get_instruments", {"identifier": instrument_identifier})
 
         return result
 
     def get_sensor_on_instruments(self, instrument_identifier):
         instrument_id = self.get_instruments_id(instrument_identifier)
-        result = self.__parse_content("get_sensors", {"instrument_id": instrument_id})
+        result = self.parse_content("get_sensors", {"instrument_id": instrument_id})
 
         return result
 
     def get_instruments_id(self, identifier):
-        instruments = self.__parse_content("get_instruments")
+        instruments = self.parse_content("get_instruments")
         id = -1
 
         for x in instruments:
@@ -153,14 +62,24 @@ class AccessApi(object):
             return instruments
 
     def get_instruments_on_platform(self, platform_name, time, instrument_identifier):
-        instruments_on_platform = self.__parse_content("get_instruments_on_platform",
-                                                       {"name": platform_name, "time": time,
-                                                        "identifier": instrument_identifier})
+        instruments_on_platform = self.parse_content("get_instruments_on_platform",
+                                                     {"name": platform_name, "time": time,
+                                                      "identifier": instrument_identifier})
+
         return instruments_on_platform
+
+    def get_platform_deployment(self, platform_name, start_time):
+
+        result = self.parse_content("get_platform_deployments", {"name": platform_name, "time": start_time})
+
+        if self.DEBUG:
+            logger.warning("get_platform_deployment result {} ".format(result))
+
+        return result
 
     def get_platform_deployment_comments(self, platform_name, start_time):
 
-        result = self.__parse_content("get_platform_deployment_comments", {"name": platform_name, "time": start_time})
+        result = self.parse_content("get_platform_deployment_comments", {"name": platform_name, "time": start_time})
 
         if self.DEBUG:
             logger.warning("get_platform_deployment result {} ".format(result))
@@ -169,13 +88,39 @@ class AccessApi(object):
 
     def get_deployment_instruments(self, platform_name, start_time):
 
-        result = self.__parse_content("get_deployment_instruments", {"name": platform_name, "time": start_time})
+        result = self.parse_content("get_deployment_instruments", {"name": platform_name, "time": start_time})
         if self.DEBUG:
             logger.warning("get_deployment_instruments result {} ".format(result))
         return result
 
+    def get_output_sensors(self, platform_name, start_time):
+        instrument = self.get_deployment_instruments(platform_name, start_time)
+
+        sensor_array = []
+
+        for i in instrument:
+            sensor = self.parse_content("get_output_sensors", {"id": i["instrument"]["id"]})
+            sensor_array.extend(sensor)
+
+        if self.DEBUG:
+            logger.warning("get_output_sensors result {} ".format(sensor_array))
+        return sensor_array
+
+    def get_sensors(self, platform_name, start_time):
+        instrument = self.get_deployment_instruments(platform_name, start_time)
+
+        sensor_array = []
+
+        for i in instrument:
+            sensor = self.parse_content("get_sensors", {"id": i["instrument"]["id"]})
+            sensor_array.extend(sensor)
+
+        if self.DEBUG:
+            logger.warning("get_sensors result {} ".format(sensor_array))
+        return sensor_array
+
     def get_platform_id(self, platform_name):
-        platform = self.__parse_content("get_platform")
+        platform = self.parse_content("get_platform")
         platform_id = -1
         for x in platform:
             if x['name'] == platform_name:
@@ -184,7 +129,7 @@ class AccessApi(object):
         return platform_id
 
     def get_platform_type(self, model_name):
-        platform_type = self.__parse_content("get_platform_type")
+        platform_type = self.parse_content("get_platform_type")
 
         name_list = []
 
@@ -197,7 +142,7 @@ class AccessApi(object):
         return name_list
 
     def get_manufacturer(self, id):
-        result = self.__parse_content("get_manufacturer", {"id": id})
+        result = self.parse_content("get_manufacturer", {"id": id})
 
         if self.DEBUG:
             logger.warning("get_manufacturer result {} ".format(result))
@@ -232,22 +177,7 @@ class AccessApi(object):
 
         return result
 
-    def is_testing_mission(self, platform_name, start_time):
-
-        result = self.get_platform_deployment(platform_name, start_time)
-        if result[0]['testing_mission']:
-            result = True
-        else:
-            return False
-
-        if self.DEBUG:
-            logger.warning("is_testing_mission result {} ".format(result))
-
-        return result
-
-    # Below is for the insert functions
     def insert_instrument(self, identifier, short_name, **kwargs):
-        self.check_auth()
         l = {"identifier": identifier, "short_name": short_name}
 
         if self.get_instruments(identifier):
@@ -270,7 +200,7 @@ class AccessApi(object):
             self.post_content("insert_instrument", l)
 
     def insert_instrument_on_platform(self, instrument, platform, starttime, **kwargs):
-        self.check_auth()
+
         instrument_id = self.get_instruments_id(instrument)
         platform_id = self.get_platform_id(platform)
 
@@ -292,7 +222,6 @@ class AccessApi(object):
                 instrument, instrument_id, platform, platform_id))
 
     def insert_sensor(self, instrument_identifier, sensor_identifier, **kwargs):
-        self.check_auth()
 
         def sensor_is_on_instrument(instrument_identifier, sensor_identifier):
             sensors = self.get_sensor_on_instruments(instrument_identifier)
@@ -363,8 +292,15 @@ class AccessApi(object):
 
                 self.post_content("insert_sensor", l)
 
+    def parse_content(self, type, arguments=None):
+        url = self.get_query_url(type, arguments)
+
+        if self.DEBUG:
+            logger.warning("get url {} ".format(url))
+        return self.get_content(url)
+
     def post_content(self, type, data):
-        url = self.__get_query_url(type, arguments=None)
+        url = self.get_query_url(type, arguments=None)
 
         if url[-1] != "/":
             url = url + "/"
@@ -391,32 +327,19 @@ class AccessApi(object):
             }
         )
 
-    def __parse_content(self, type, arguments=None):
-        url = self.__get_query_url(type, arguments)
-
-        if self.DEBUG:
-            logger.warning("get url {} ".format(url))
-        return self.__get_content(url)
-
-
-    def parse_content(self, type, arguments=None):
-        url = self.__get_query_url(type, arguments)
-
-        if self.DEBUG:
-            logger.warning("get url {} ".format(url))
-        return self.__get_content(url)
-
-    def __get_content(self, url):
+    def get_content(self, url):
         r = requests.get(url)
-        if r.status_code == 200:
-            return r.json()['data']
-        return None
+        return r.json()['data']
 
-    def __get_query_url(self, type, arguments=None):
+    def get_query_url(self, type, arguments=None):
         if arguments is None:
             return self.SensorTackerApi + type
         else:
-            return self.SensorTackerApi + type + '?' + urllib.parse.urlencode(arguments)
+            # Handle the different version of python
+            try:
+                return self.SensorTackerApi + type + '?' + urllib.parse.urlencode(arguments)
+            except:
+                return self.SensorTackerApi + type + '?' + urllib.urlencode(arguments)
 
     def validate_args(self, *args):
         raise NotImplemented
@@ -427,18 +350,3 @@ class AccessApi(object):
                 del dict[i]
 
         return dict
-
-
-api = AccessApi(debug=True)
-# b = api.get_platform_deployment("Fundy", "2018-05-17 16:02:26")
-# b = api.get_platform_type("Slocum")
-# print(b)
-# platform_type = api.parse_content("get_platform_type", {"model": "Slocum Glider G2"})
-#test = api.parse_content("get_platform", {"type":"Slocum Glider G3"})
-# print(test)
-
-# test = api.get_deployment_instruments("dal556", "2017-06-05 15:13:26")
-#est = api.get_deployment_instruments("dal556", "2017-06-05 15:13:26")
-test = api.parse_content("get_manufacturer",{})
-print(test)
-#print(test)
