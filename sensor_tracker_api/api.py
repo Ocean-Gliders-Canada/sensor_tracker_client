@@ -137,6 +137,23 @@ class AccessApi(object):
     def get_mission_end_time(self, platform_name, start_time):
         pass
 
+    def get_deployment_by_name_time(self, platform_name, start_time):
+        obj = self.process.get_deployment_by_name_time(platform_name, start_time)
+        return obj
 
-#a = AccessApi(debug=True)
-#print(a.get_deployment_info(1))
+    def is_testing_mission(self, platform_name, start_time):
+        obj = self.get_deployment_by_name_time(platform_name, start_time)
+        res = obj.get_column("testing_mission")
+        testing = res[0]
+        if not testing:
+            testing = False
+        return testing
+
+    def get_mission_id(self, platform_name, start_time):
+        obj = self.get_deployment_by_name_time(platform_name, start_time)
+        res = obj.get_column("deployment_number")
+        num = res[0]
+        return num
+
+# a = AccessApi(debug=True)
+# print(a.is_testing_mission("dal556", "2017-06-05 15:13:26"))
