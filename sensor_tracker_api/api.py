@@ -116,7 +116,6 @@ class AccessApi(object):
         pass
 
     def get_platform_deployment_comments(self, platform_name, start_time):
-
         pass
 
     def get_platform_type(self, model_name):
@@ -129,8 +128,8 @@ class AccessApi(object):
         pass
 
     def get_deployment_info(self, deployment_num):
-        df = self.process.get_deployment_by_deployment_number(deployment_num)
-        data_dict = df.to_dict('records')[0]
+        obj = self.process.get_deployment_by_deployment_number(deployment_num)
+        data_dict = obj.to_dict()[0]
         platform_name = data_dict["platform_name"]
         start_time = data_dict['start_time']
         return platform_name, start_time
@@ -139,5 +138,5 @@ class AccessApi(object):
         pass
 
 
-a = AccessApi(debug=True)
-print(a.get_deployment_info(1))
+#a = AccessApi(debug=True)
+#print(a.get_deployment_info(1))
