@@ -131,6 +131,18 @@ class Process(object):
                 deployment_objs = deployment_obj
         return deployment_objs
 
+    def get_deployment_by_model(self, model):
+        platform_obj = self.get_platform_by_type(model)
+        platform_names = platform_obj.get_column("name")
+        deployment_objs = None
+        for name in platform_names:
+            deployment_obj = self.get_deployments_by_platform_name(name)
+            if deployment_objs:
+                deployment_objs.add(deployment_obj)
+            else:
+                deployment_objs = deployment_obj
+        return deployment_objs
+
     def get_deployments_by_platform_name(self, platform_name):
         json_deployments = self.APIGetter.get_platform_deployments(platform_name=platform_name)
         header, rows = self.parsers.parse(self.format["deployment_format"], json_deployments)
@@ -171,9 +183,21 @@ class Process(object):
     def get_manufacturer_by_manufacturer_id(self, manufacturer_id):
         json_manufacturer = self.APIGetter.get_manufacturer(manufacturer_id=manufacturer_id)
 
+    def get_instruments_on_platform_by_name(self, platform_name):
+        instruments_obj = self.APIGetter.get_instruments_on_platform(platform_name=platform_name)
+        header, rows = self.parsers.parse(self.format["instrument_all_format"], instruments_obj)
+        o = self.object_factory.create(header=header, content=rows)
+        return o
 
-#p = Process("http://127.0.0.1:8000/api/")
+    def get_platform_deployment_comments(self, platform_name, start_time):
+        comments_obj = self.APIGetter.get_platform_deployment_comments(platform_name=platform_name,
+                                                                       start_time=start_time)
+        header, rows = self.parsers.parse(self.format["deployment_comment_format"], comments_obj)
+        o = self.object_factory.create(header=header, content=rows)
+        return o
+
+# p = Process("http://127.0.0.1:8000/api/")
 # print(p.get_output_sensors_by_platform("dal556", "2017-06-05 15:13:26"))
-#ob = p.get_deployments_by_general_model("slocum")
-#print(ob.to_dict())
-# print(p.get_all_sensors())
+# ob = p.get_deployments_by_general_model("slocum")
+# print(ob.to_dict())
+# print(p.get_instruments_on_platform_by_name("dal556").to_csv("/Users/xiang/Desktop/output/5.csv"))

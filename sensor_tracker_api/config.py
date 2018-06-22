@@ -36,9 +36,22 @@ class Config(object):
         "manufacturer": [
             ("province",), ("city",), ("name",), ("country",), ("street",), ("postal_code",), ("contact_email",),
             ("contact_name",), ("contact_phone",), ("id",)
+        ],
+        "instrument_all_format": [
+            ("instrument_id",), ("comment",), ("platform", "name"), ("start_time",), ("end_time",),
+            ("instrument", "comment"),
+            ("instrument", "short_name"),
+            ("instrument", "long_name"), ("instrument", "identifier"),
+            ("instrument", "serial")
+        ],
+        "deployment_comment_format": [
+            ("user", "username"), ("created_date",), ("comment",)
         ]
     }
 
     SENSOR_TRACKER_CONNECTOR = 'http://bugs.ocean.dal.ca/sensor_tracker/api/'
     SENSOR_TRACKER_LOCAL_URL = "http://127.0.0.1:8000/api/"
-    GLIDER_TYPE = ["Wave", "Slocum"]
+    GLIDER_TYPE = ["wave", "slocum"]
+
+    ARG_TYPE = {"INVALID": 0, "general_model": 1, "name_time": 2, "time_name": 3, "deployment_number": 4, "model": 5,
+                "platform_name": 6}

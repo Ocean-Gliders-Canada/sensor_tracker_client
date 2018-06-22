@@ -47,6 +47,11 @@ class APIGetMethod(object):
         result = self.__parse_content("get_deployment_instruments", {"name": platform_name, "time": start_time})
         return result
 
+    def get_instruments_on_platform(self, **kwargs):
+        platform_name = kwargs.pop("platform_name", None)
+        result = self.__parse_content("get_instruments_on_platform", {"name": platform_name})
+        return result
+
     def get_sensors(self, **kwargs):
         instrument_id = kwargs.pop("instrument_id", None)
         if instrument_id:
@@ -70,6 +75,14 @@ class APIGetMethod(object):
             para["id"] = instrument_id
 
         result = self.__parse_content("get_output_sensors", para)
+
+        return result
+
+    def get_platform_deployment_comments(self, **kwargs):
+        name = kwargs.pop("platform_name", None)
+        time = kwargs.pop("start_time", None)
+        para = {"name": name, "time": time}
+        result = self.__parse_content("get_platform_deployment_comments", para)
 
         return result
 
@@ -133,3 +146,10 @@ class APIGetMethod(object):
             return self.host + type
         else:
             return self.host + type + '?' + urllib.parse.urlencode(arguments)
+
+
+#p = APIGetMethod(host="http://127.0.0.1:8000/api/")
+# print(p.get_output_sensors_by_platform("dal556", "2017-06-05 15:13:26"))
+# ob = p.get_deployments_by_general_model("slocum")
+# print(ob.to_dict())
+#print(p.get_platform_deployment_comments(platform_name="dal556", start_time="2017-06-05 15:13:26"))

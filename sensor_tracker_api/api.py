@@ -1,10 +1,8 @@
 #!python
 # coding=utf-8
-import logging
 from sensor_tracker_api.config import Config
 from sensor_tracker_api.process import Process
-
-logger = logging.getLogger(__name__)
+from sensor_tracker_api.args_checker import InputChecker
 
 
 class AccessApi(object):
@@ -21,8 +19,10 @@ class AccessApi(object):
         self.user = user
         self.deployment_cache = {}
         self.password = password
-        self.GLIDER_TYPES = Config.GLIDER_TYPE
+        self.config = Config
+        self.GLIDER_TYPES = self.config.GLIDER_TYPE
         self.process = Process(self.SensorTackerApi)
+        self.arg_check = InputChecker(Config)
 
     def set_authentication(self, content):
         if type(content) is str:
@@ -41,91 +41,69 @@ class AccessApi(object):
             self.GLIDER_TYPES = [models]
         else:
             raise Exception("Incorrect deployment model input")
+        self.arg_check = InputChecker(Config)
 
-    def __init_deployment_cache(self):
-        glider_models = Config.GLIDER_TYPE
-        deployment_list = []
-
-        for model in glider_models:
-            deployment_list.extend(self.get_deployments(model))
-
-        for deployment in deployment_list:
-            self.deployment_cache[deployment["deployment_number"]] = {"platform_name": 1, "start_time": 2,
-                                                                      "end_time": 3}
-
-    def set_deployment_number(self, num):
-        # Todo: Write the method to check the update
-        if type(num) is int:
-            deployemnt_number = num
-        elif type(num) is str:
-            try:
-                deployemnt_number = int(num)
-            except ValueError:
-                raise Exception("Deployment number is Integer")
-        else:
-            raise Exception("Deployment number is Integer")
-
-        if num in self.deployment_cache:
-            return self.deployment_cache[num]
-        else:
-            raise Exception("invalid deployment")
-
-    def get_sensors_on_deployment(self, platform_name, start_time):
-        df = self.process.get_sensors_on_deployment(platform_name, start_time)
-        return df
-
-    def get_output_sensors(self, platform_name, start_time):
-        df = self.process.get_output_sensors_by_deployment(platform_name, start_time)
-        return df
-
-    def get_deployments(self, para, specific=None):
+    def get_deployments(self, *args, **kwargs):
         """
-        para cloud be deployment number, or platform type or, platform name.
+        Input cloud be deployment number, or platform type or, platform name or platform name and start time
 
         :param specific:
         :param para:
         :return: relevant deployments data in pandas format
         """
+        arg_type = kwargs.pop("arg_type", None)
+        length_of_arg = len(args)
+        if arg_type in self.config.ARG_TYPE:
+            arg_type = self.config.ARG_TYPE[arg_type]
+        else:
+            arg_type = None
+        if not arg_type:
+            arg_type = self.arg_check.deployment_input_check(*args)
+
+        res = None
+
+        if arg_type == self.config.ARG_TYPE["INVALID"]:
+            raise Exception("Invalid Input")
+        elif arg_type == self.config.ARG_TYPE["general_model"]:
+            res = self.process.get_deployments_by_general_model(*args)
+        elif arg_type == self.config.ARG_TYPE["deployment_number"]:
+            res = self.process.get_deployment_by_deployment_number(*args)
+        elif arg_type == self.config.ARG_TYPE["model"]:
+            res = self.process.get_platform_by_model(*args)
+        elif arg_type == self.config.ARG_TYPE["platform_name"]:
+            res = self.process.get_deployments_by_platform_name(*args)
+        elif arg_type == self.config.ARG_TYPE["name_time"]:
+            res = self.process.get_deployment_by_name_time(*args)
+
+        return res
+
+    def get_sensors(self, *args, **kwargs):
+        arg_type = kwargs.pop("output", True)
+        if arg_type:
+            res = self.process.get_output_sensors_by_deployment(*args)
+        else:
+            res = self.process.get_sensors_on_deployment(*args)
+        return res
+
+    def get_instruments(self, *args, **kwargs):
+        length_of_arg = len(args)
+        res = None
+        if length_of_arg == 1:
+            name = args[0]
+            res = self.process.get_instruments_on_platform_by_name(name)
+        elif length_of_arg == 2:
+            res = self.process.get_instrument_on_deployment(*args)
+        return res
+
+    def get_deployment_comments(self, platform_name, start_time):
+        o = self.process.get_platform_deployment_comments(platform_name, start_time)
+        return o
+
+    def get_platform(self, *args, **kwargs):
         pass
 
-    def get_deployments_by_general_model(self, general_model):
-        return self.process.get_deployments_by_general_model(general_model)
-
-    def get_deployment_by_deployment_number(self, number):
-        return self.process.get_deployment_by_deployment_number(number)
-
-    def get_deployments_by_platform_name(self, platform_name):
-        return self.process.get_deployments_by_platform_name(platform_name)
-
-    def get_platform_by_model(self, model):
+    def __get_platform_by_model(self, model):
         return self.process.get_platform_by_model(model)
-
-    def get_platform_deployment(self, platform_name, start_time):
-        return self.process.get_deployment_by_name_time(platform_name, start_time)
-
-    def get_deployment_instruments(self, platform_name, start_time):
-        return self.process.get_instrument_on_deployment(platform_name, start_time)
-
-    def get_sensor_on_instruments(self, instrument_identifier):
-        pass
-
-    def get_instruments_id(self, identifier):
-        pass
-
-    def get_instruments_on_platform(self, platform_name, time, instrument_identifier):
-        pass
-
-    def get_platform_deployment_comments(self, platform_name, start_time):
-        pass
-
-    def get_platform_type(self, model_name):
-        pass
-
-    def get_manufacturer(self, id):
-        pass
-
-    def get_deployment_number(self, platform_name, start_time):
-        pass
 
     def get_deployment_info(self, deployment_num):
         obj = self.process.get_deployment_by_deployment_number(deployment_num)
@@ -134,15 +112,8 @@ class AccessApi(object):
         start_time = data_dict['start_time']
         return platform_name, start_time
 
-    def get_mission_end_time(self, platform_name, start_time):
-        pass
-
-    def get_deployment_by_name_time(self, platform_name, start_time):
-        obj = self.process.get_deployment_by_name_time(platform_name, start_time)
-        return obj
-
     def is_testing_mission(self, platform_name, start_time):
-        obj = self.get_deployment_by_name_time(platform_name, start_time)
+        obj = self.get_deployments(platform_name, start_time)
         res = obj.get_column("testing_mission")
         testing = res[0]
         if not testing:
@@ -150,10 +121,14 @@ class AccessApi(object):
         return testing
 
     def get_mission_id(self, platform_name, start_time):
-        obj = self.get_deployment_by_name_time(platform_name, start_time)
+        obj = self.get_deployments(platform_name, start_time)
         res = obj.get_column("deployment_number")
         num = res[0]
         return num
 
-# a = AccessApi(debug=True)
-# print(a.is_testing_mission("dal556", "2017-06-05 15:13:26"))
+"""
+a = AccessApi(debug=True)
+b = a.get_deployments("slocum")
+print(b.to_dict())
+b.to_csv("/Users/xiang/Desktop/output/3.csv")
+"""
