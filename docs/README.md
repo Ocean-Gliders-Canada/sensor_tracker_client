@@ -1,10 +1,10 @@
-# Sensor tracker api
+# Introduction
 
-Install through pip:
+* [**Introduction**](README.md)
+* [**Overview**](Overview.md)
+* [**Usage**](Usage.md)
 
-```
-pip install git+https://gitlab.oceantrack.org/ocean-gliders-canada/tracker_api.git
-```
+##### 
 
 
 
