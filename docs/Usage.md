@@ -6,7 +6,7 @@ There are four get interface for different data:
 
 We have three get method which can get get\_deployments, getsensors, getinstruments, get\_deployment\_comments, get\_platform
 
-* ##### [get deployments](#1) {#1}
+* ##### [get deployments](#1)
 * ##### [get sensors](#2)
 * ##### [get instruments](#3)
 * ##### [get deployment comments](#4)
@@ -14,7 +14,7 @@ We have three get method which can get get\_deployments, getsensors, getinstrume
 
 ---
 
-### [get deployments](#0)
+### [get deployments](#0) {#1}
 
 Parameter could be general mode such as "slocum", which will return a data object which contain all of the slocum deployment data.
 
@@ -52,8 +52,15 @@ data_obj = tracker_api.get_deployments("DL", "2018-04-03 12:00:00")
 
 Parameter could be platform name and deployment time, and specific it is a output sensor or no.
 
+If output=True, the result will only contain the output sensors
+
 ```py
 data_obj = tracker_api.get_sensors("DL", "2018-04-03 12:00:00", output=True)
+```
+
+if output=false, the result will all sensors
+
+```py
 data_obj = tracker_api.get_sensors("DL", "2018-04-03 12:00:00", output=False)
 ```
 
@@ -64,19 +71,19 @@ data_obj = tracker_api.get_sensors("DL", "2018-04-03 12:00:00", output=False)
 Parameter could be deployment\_number
 
 ```py
-data_obj = tracker_api.get_deployments(80)
+data_obj = tracker_api.get_instruments(80)
 ```
 
 Parameter could be platform\_name
 
 ```py
-data_obj = tracker_api.get_deployments("otn200")
+data_obj = tracker_api.get_instruments("otn200")
 ```
 
 Parameter could be deployment name and time
 
 ```py
-data_obj = tracker_api.get_deployments("DL", "2018-04-03 12:00:00")
+data_obj = tracker_api.get_instruments("DL", "2018-04-03 12:00:00")
 ```
 
 ---
@@ -86,7 +93,13 @@ data_obj = tracker_api.get_deployments("DL", "2018-04-03 12:00:00")
 Parameter could be deployment name and time
 
 ```py
-data_obj = tracker_api.get_deployments("DL", "2018-04-03 12:00:00")
+data_obj = tracker_api.get_deployment_comments("DL", "2018-04-03 12:00:00")
+```
+
+Parameter could be deployment number
+
+```py
+data_obj = tracker_api.get_deployment_comments(5)
 ```
 
 ---

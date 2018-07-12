@@ -120,7 +120,7 @@ class Process(object):
         return self.get_platform_type(None, None)
 
     def get_deployments_by_general_model(self, general_model):
-        platform_obj = self.get_platform_by_model(general_model)
+        platform_obj = self.get_platform_by_general_model(general_model)
         platform_names = platform_obj.get_column("name")
         deployment_objs = None
         for name in platform_names:
@@ -132,7 +132,7 @@ class Process(object):
         return deployment_objs
 
     def get_deployment_by_model(self, model):
-        platform_obj = self.get_platform_by_type(model)
+        platform_obj = self.get_platform_by_model(model)
         platform_names = platform_obj.get_column("name")
         deployment_objs = None
         for name in platform_names:
@@ -162,21 +162,21 @@ class Process(object):
         o = self.object_factory.create(header=header, content=rows)
         return o
 
-    def get_platform_by_type(self, type):
+    def get_platform_by_model(self, type):
         platform_json = self.APIGetter.get_platform(platform_type=type)
         header, rows = self.parsers.parse(self.format["platform_format"], platform_json)
         o = self.object_factory.create(header=header, content=rows)
         return o
 
-    def get_platform_by_model(self, model):
+    def get_platform_by_general_model(self, model):
         platform_model_obj = self.get_platform_type_by_general_model(model)
         models = platform_model_obj.get_column("model")
         platform_obj = None
         for model in models:
             if not platform_obj:
-                platform_obj = self.get_platform_by_type(model)
+                platform_obj = self.get_platform_by_model(model)
             else:
-                platform_obj.add(self.get_platform_by_type(model))
+                platform_obj.add(self.get_platform_by_model(model))
 
         return platform_obj
 

@@ -28,7 +28,10 @@ class InputChecker(object):
             value1 = args[0]
             value2 = args[1]
             try:
-                time.strptime(value2, '%Y-%m-%d %H:%M:%S')
+                if ":" in value2 and "-" in value2:
+                    time.strptime(value2, '%Y-%m-%d %H:%M:%S')
+                else:
+                    raise ValueError
                 if type(value1) is str:
                     return self.config.ARG_TYPE["name_time"]
             except ValueError:
@@ -37,7 +40,6 @@ class InputChecker(object):
         return self.config.ARG_TYPE["INVALID"]
 
     def sensor_input_check(self, *args, **kwargs):
-        output = kwargs.pop("output", True)
         length_of_input = len(args)
         if length_of_input == 1:
             value = args[0]
@@ -60,7 +62,10 @@ class InputChecker(object):
             value1 = args[0]
             value2 = args[1]
             try:
-                time.strptime(value2, '%Y-%m-%d %H:%M:%S')
+                if ":" in value2 and "-" in value2:
+                    time.strptime(value2, '%Y-%m-%d %H:%M:%S')
+                else:
+                    raise ValueError
                 if type(value1) is str:
                     return self.config.ARG_TYPE["name_time"]
             except ValueError:
@@ -82,7 +87,17 @@ class InputChecker(object):
                 else:
                     return self.config.ARG_TYPE["platform_name"]
         elif length_of_input == 2:
-            return self.config.ARG_TYPE["name_time"]
+            value1 = args[0]
+            value2 = args[1]
+            try:
+                if ":" in value2 and "-" in value2:
+                    time.strptime(value2, '%Y-%m-%d %H:%M:%S')
+                else:
+                    raise ValueError
+                if type(value1) is str:
+                    return self.config.ARG_TYPE["name_time"]
+            except ValueError:
+                pass
 
         return self.config.ARG_TYPE["INVALID"]
 
@@ -98,7 +113,17 @@ class InputChecker(object):
                 if is_int:
                     return self.config.ARG_TYPE["deployment_number"]
         elif length_of_input == 2:
-            return self.config.ARG_TYPE["name_time"]
+            value1 = args[0]
+            value2 = args[1]
+            try:
+                if ":" in value2 and "-" in value2:
+                    time.strptime(value2, '%Y-%m-%d %H:%M:%S')
+                else:
+                    raise ValueError
+                if type(value1) is str:
+                    return self.config.ARG_TYPE["name_time"]
+            except ValueError:
+                pass
 
         return self.config.ARG_TYPE["INVALID"]
 

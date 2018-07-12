@@ -65,7 +65,7 @@ class AccessApi(object):
         elif arg_type == self.config.ARG_TYPE["deployment_number"]:
             res = self.process.get_deployment_by_deployment_number(*args)
         elif arg_type == self.config.ARG_TYPE["model"]:
-            res = self.process.get_platform_by_model(*args)
+            res = self.process.get_deployment_by_model(*args)
         elif arg_type == self.config.ARG_TYPE["platform_name"]:
             res = self.process.get_deployments_by_platform_name(*args)
         elif arg_type == self.config.ARG_TYPE["name_time"]:
@@ -75,7 +75,7 @@ class AccessApi(object):
 
     def get_sensors(self, *args, **kwargs):
         output = kwargs.pop("output", True)
-        checker = self.arg_check.sensor_input_check()
+        checker = self.arg_check.sensor_input_check
         arg_type = self.__input_check(checker, *args, **kwargs)
         res = None
         if arg_type == self.config.ARG_TYPE["INVALID"]:
@@ -129,7 +129,7 @@ class AccessApi(object):
         if arg_type == self.config.ARG_TYPE["INVALID"]:
             raise TypeError("Invalid Input")
         elif arg_type == self.config.ARG_TYPE["general_model"]:
-            res = self.process.get_platform_type_by_general_model(*args)
+            res = self.process.get_platform_by_general_model(*args)
         elif arg_type == self.config.ARG_TYPE["model"]:
             res = self.process.get_platform_by_model(*args)
 
