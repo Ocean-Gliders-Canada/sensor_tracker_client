@@ -398,7 +398,6 @@ class AccessApi(object):
             logger.warning("get url {} ".format(url))
         return self.__get_content(url)
 
-
     def parse_content(self, type, arguments=None):
         url = self.__get_query_url(type, arguments)
 
@@ -434,11 +433,11 @@ api = AccessApi(debug=True)
 # b = api.get_platform_type("Slocum")
 # print(b)
 # platform_type = api.parse_content("get_platform_type", {"model": "Slocum Glider G2"})
-#test = api.parse_content("get_platform", {"type":"Slocum Glider G3"})
+# test = api.parse_content("get_platform", {"type":"Slocum Glider G3"})
 # print(test)
 
 # test = api.get_deployment_instruments("dal556", "2017-06-05 15:13:26")
-#est = api.get_deployment_instruments("dal556", "2017-06-05 15:13:26")
-test = api.parse_content("get_manufacturer",{})
+# est = api.get_deployment_instruments("dal556", "2017-06-05 15:13:26")
+test = api.parse_content("get_manufacturer", {})
 print(test)
-#print(test)
+# print(test)

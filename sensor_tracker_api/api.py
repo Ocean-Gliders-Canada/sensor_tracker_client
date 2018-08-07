@@ -2,7 +2,7 @@
 # coding=utf-8
 from sensor_tracker_api.config import Config
 from sensor_tracker_api.process import Process
-from sensor_tracker_api.args_checker import InputChecker
+from sensor_tracker_api.checker.args_checker import InputChecker
 
 
 class AccessApi(object):
@@ -168,9 +168,8 @@ class AccessApi(object):
         return num
 
 
-"""
-a = AccessApi(debug=True)
-b = a.get_deployments("slocum")
-print(b.to_dict())
-b.to_csv("/Users/xiang/Desktop/output/3.csv")
-"""
+
+a = AccessApi()
+b = a.get_deployments("Fundy","2018-05-17 16:02:26")
+
+print(b.to_csv("/Users/xiang/Desktop/output/sample3.csv"))

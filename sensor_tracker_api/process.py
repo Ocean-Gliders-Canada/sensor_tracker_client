@@ -1,5 +1,5 @@
-from sensor_tracker_api.simply_meta_data_factory import SimplyMetaDataFactory
-from sensor_tracker_api.binder import APIGetMethod
+from sensor_tracker_api.builder.simply_meta_data_factory import SimplyMetaDataFactory
+from sensor_tracker_api.binder.get_binder import APIGetMethod
 from sensor_tracker_api.config import Config
 from sensor_tracker_api.parser import Parser
 

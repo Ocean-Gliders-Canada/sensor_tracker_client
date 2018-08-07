@@ -1,4 +1,4 @@
-from sensor_tracker_api.meta_data import MetaData
+from sensor_tracker_api.object.meta_data import MetaData
 
 
 class SimplyMetaDataFactory(object):
