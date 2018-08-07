@@ -1,7 +1,7 @@
 import unittest
 
 from sensor_tracker_api.config import Config
-from sensor_tracker_api.api import InputChecker
+from sensor_tracker_api.checker.args_checker import InputChecker
 
 
 class TestInputChecker(unittest.TestCase):
