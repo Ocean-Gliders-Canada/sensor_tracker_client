@@ -4,6 +4,7 @@ import pandas as pd
 class MetaData(object):
     def __init__(self, header, content):
         self.header = header
+        # [(),(),]
         self.content = content
 
     def add(self, row):

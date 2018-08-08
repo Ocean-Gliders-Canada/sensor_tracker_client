@@ -1,9 +1,18 @@
-class Parser(object):
+from sensor_tracker_api.parser.parser import Parser as p
 
-    def parse(self, pattern, content):
+
+class Parser(p):
+
+    def parse(self, **kwargs):
+        pattern = kwargs.pop("pattern", None)
+        content = kwargs.pop("content", None)
         rows = self.__parser(pattern, content)
         header = self.create_pandas_header(pattern)
-        return header, rows
+        res = dict(
+            header=header,
+            content=rows,
+        )
+        return res
 
     def __parser(self, pattern, content):
         table_rows = []

@@ -1,7 +1,7 @@
 from sensor_tracker_api.builder.simply_meta_data_factory import SimplyMetaDataFactory
 from sensor_tracker_api.binder.get_binder import APIGetMethod
 from sensor_tracker_api.config import Config
-from sensor_tracker_api.parser import Parser
+from sensor_tracker_api.parser.json_parser import Parser
 
 
 class Process(object):
@@ -10,7 +10,7 @@ class Process(object):
         self.APIGetter = APIGetMethod(host=self.host)
 
         self.format = Config.FORMAT
-        self.object_factory = SimplyMetaDataFactory(Parser())
+        self.object_factory = SimplyMetaDataFactory(parser=Parser())
 
     def get_sensors_on_deployment(self, platform_name, start_time):
         instrument = self.get_deployment_instruments(platform_name, start_time)
@@ -45,12 +45,16 @@ class Process(object):
     def get_output_sensors(self, instrument_identifier, instrument_id):
         json_output_sensors = self.APIGetter.get_output_sensors(instrument_identifier=instrument_identifier,
                                                                 instrument_id=instrument_id)
-        o = self.object_factory.generate_obj(self.format["sensor_format"], json_output_sensors)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["sensor_format"], content=json_output_sensors))
+
         return o
 
     def get_sensors(self, instrument_id=None):
         json_sensor = self.APIGetter.get_sensors(instrument_id=instrument_id)
-        o = self.object_factory.generate_obj(self.format["sensor_format"], json_sensor)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["sensor_format"], content=json_sensor))
+
         return o
 
     def get_all_sensors(self):
@@ -58,18 +62,24 @@ class Process(object):
 
     def get_instruments_by_instrument_identifier(self, instrument_identifier):
         json_instrument = self.APIGetter.get_instruments(instrument_identifier=instrument_identifier)
-        o = self.object_factory.generate_obj(self.format["instrument_format"], json_instrument)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["instrument_format"], content=json_instrument))
+
         return o
 
     def get_instruments_by_instrument_id(self, instrument_id):
         json_instrument = self.APIGetter.get_instruments(instrument_id=instrument_id)
-        o = self.object_factory.generate_obj(self.format["instrument_format"], json_instrument)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["instrument_format"], content=json_instrument))
+
         return o
 
     def get_deployment_instruments(self, platform_name, start_time):
         json_deployment_instruments = self.APIGetter.get_deployment_instruments(platform_name=platform_name,
                                                                                 start_time=start_time)
-        o = self.object_factory.generate_obj(self.format["platform_instrument_format"], json_deployment_instruments)
+        o = self.object_factory.generate_obj(**self.__create_input(pattern=self.format["platform_instrument_format"],
+                                                                   content=json_deployment_instruments))
+
         return o
 
     def get_instrument_on_deployment(self, platform_name, start_time):
@@ -88,12 +98,16 @@ class Process(object):
     def get_all_instruments(self):
         json_instruments = self.APIGetter.get_instruments()
 
-        o = self.object_factory.generate_obj(self.format["instrument_format"], json_instruments)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["instrument_format"], content=json_instruments))
+
         return o
 
     def get_platform_type(self, model, name):
         json_platform_type = self.APIGetter.get_platform_type(model=model, name=name)
-        o = self.object_factory.generate_obj(self.format["platform_type_format"], json_platform_type)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["platform_type_format"], content=json_platform_type))
+
         return o
 
     def get_platform_type_by_general_model(self, general_model):
@@ -139,23 +153,31 @@ class Process(object):
 
     def get_deployments_by_platform_name(self, platform_name):
         json_deployments = self.APIGetter.get_platform_deployments(platform_name=platform_name)
-        o = self.object_factory.generate_obj(self.format["deployment_format"], json_deployments)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["deployment_format"], content=json_deployments))
+
         return o
 
     def get_deployment_by_deployment_number(self, number):
         json_deployments = self.APIGetter.get_platform_deployments(deployment_number=number)
-        o = self.object_factory.generate_obj(self.format["deployment_format"], json_deployments)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["deployment_format"], content=json_deployments))
+
         return o
 
     def get_deployment_by_name_time(self, platform_name, start_time):
         json_platform_deployment = self.APIGetter.get_platform_deployments(platform_name=platform_name,
                                                                            start_time=start_time)
-        o = self.object_factory.generate_obj(self.format["deployment_format"], json_platform_deployment)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["deployment_format"], content=json_platform_deployment))
+
         return o
 
     def get_platform_by_model(self, type):
         platform_json = self.APIGetter.get_platform(platform_type=type)
-        o = self.object_factory.generate_obj(self.format["platform_format"], platform_json)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["platform_format"], content=platform_json))
+
         return o
 
     def get_platform_by_general_model(self, model):
@@ -175,14 +197,24 @@ class Process(object):
 
     def get_instruments_on_platform_by_name(self, platform_name):
         instruments_obj = self.APIGetter.get_instruments_on_platform(platform_name=platform_name)
-        o = self.object_factory.generate_obj(self.format["instrument_all_format"], instruments_obj)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["instrument_all_format"], content=instruments_obj))
+
         return o
 
     def get_platform_deployment_comments(self, platform_name, start_time):
         comments_obj = self.APIGetter.get_platform_deployment_comments(platform_name=platform_name,
                                                                        start_time=start_time)
-        o = self.object_factory.generate_obj(self.format["deployment_comment_format"], comments_obj)
+        o = self.object_factory.generate_obj(
+            **self.__create_input(pattern=self.format["deployment_comment_format"], content=comments_obj))
         return o
+
+    def __create_input(self, pattern=None, content=None):
+        res = dict(
+            pattern=pattern,
+            content=content
+        )
+        return res
 
 # p = Process("http://127.0.0.1:8000/api/")
 # print(p.get_output_sensors_by_platform("dal556", "2017-06-05 15:13:26"))

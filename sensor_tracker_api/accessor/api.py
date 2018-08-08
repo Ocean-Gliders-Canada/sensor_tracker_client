@@ -45,9 +45,3 @@ class AccessApi(object):
             raise TypeError("Incorrect deployment model input")
         self.arg_check = InputChecker(Config)
 
-"""
-a = AccessApi()
-b = a.get_deployments("Fundy", "2018-05-17 16:02:26")
-
-print(b.to_csv("/Users/xiang/Desktop/output/sample3.csv"))
-"""

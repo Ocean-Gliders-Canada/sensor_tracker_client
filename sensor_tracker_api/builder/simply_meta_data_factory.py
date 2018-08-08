@@ -2,7 +2,7 @@ from sensor_tracker_api.object.meta_data import MetaData
 
 
 class SimplyMetaDataFactory(object):
-    def __init__(self, parser):
+    def __init__(self, parser=None):
         self.parsers = parser
 
     def create(self, **kwargs):
@@ -14,10 +14,10 @@ class SimplyMetaDataFactory(object):
         o = MetaData(header, content)
         return o
 
-    def generate_obj(self, content_format, content):
-        header, rows = self.parse(content_format, content)
-        return self.create(header=header, content=rows)
+    def generate_obj(self, **kwargs):
+        res = self.parse(**kwargs)
+        return self.create(**res)
 
-    def parse(self, content_format, content):
-        header, rows = self.parsers.parse(content_format, content)
-        return header, rows
+    def parse(self, **kwargs):
+        res = self.parsers.parse(**kwargs)
+        return res

@@ -67,3 +67,9 @@ class AccessApi(object):
         if self.get_api is None:
             self.get_api = GetApi(**self.__dict__())
 
+
+
+a = AccessApi()
+b = a.get_deployments("Fundy", "2018-05-17 16:02:26")
+
+print(b.to_csv("/Users/xiang/Desktop/output/sample3.csv"))
