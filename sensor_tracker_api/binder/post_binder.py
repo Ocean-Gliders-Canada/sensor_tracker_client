@@ -58,7 +58,7 @@ class APIPostMethod(APIMethod):
             ret_dict = json.loads(ret_data)
             s = ret_dict.get("success", None)
             if s is not None:
-                res = True
+                res = ret_dict.get("id", None)
             else:
                 print(ret_data)
         else:

@@ -51,6 +51,8 @@ class AccessApi(object):
         self.init_get_api()
         return self.get_api.get_mission_id(platform_name, start_time)
 
+
+
     def __dict__(self):
         res = dict(
             debug=self.debug,
@@ -65,11 +67,3 @@ class AccessApi(object):
         if self.get_api is None:
             self.get_api = GetApi(**self.__dict__())
 
-
-def check_authorization(f):
-    pass
-
-
-a = AccessApi(host="dasdasd", token="adasdas")
-b = a.get_deployments("Fundy", "2018-05-17 16:02:26")
-print(b.to_dict())
