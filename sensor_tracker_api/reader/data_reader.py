@@ -10,12 +10,14 @@ class DataReader(CsvReader):
 
     def generate_obj(self):
         df = self.get_df()
-        param = {"df" : df}
+        param = {"df": df}
         obj = self.factory.generate_obj(**param)
         return obj
 
 
+"""
 o = DataReader("/Users/xiang/Desktop/output/sample.csv")
 res = o.generate_obj()
-
 print(res)
+
+"""

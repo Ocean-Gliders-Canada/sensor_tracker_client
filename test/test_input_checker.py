@@ -1,6 +1,6 @@
 import unittest
 
-from sensor_tracker_api.config import Config
+from sensor_tracker_api.config.config import Config
 from sensor_tracker_api.checker.args_checker import InputChecker
 
 

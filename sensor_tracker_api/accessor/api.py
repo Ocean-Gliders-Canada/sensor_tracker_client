@@ -1,6 +1,6 @@
 #!python
 # coding=utf-8
-from sensor_tracker_api.config import Config
+from sensor_tracker_api.config.config import Config
 from sensor_tracker_api.processor.get_process import Process
 from sensor_tracker_api.checker.args_checker import InputChecker
 

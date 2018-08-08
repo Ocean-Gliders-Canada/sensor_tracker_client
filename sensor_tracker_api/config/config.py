@@ -1,4 +1,7 @@
-class Config(object):
+from sensor_tracker_api.config.post_config import PostConfig
+
+
+class Config(PostConfig):
     FORMAT = {
         "deployment_format": [("wmo_id",), ("deployment_number",), ("platform_name",), ("power_type", "name"),
                               ("title",),

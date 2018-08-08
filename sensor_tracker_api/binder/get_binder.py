@@ -127,6 +127,23 @@ class APIGetMethod(APIMethod):
 
         return result
 
+    def get_power(self, **kwargs):
+        power_name = kwargs.pop("power_name", None)
+        para = {"name": power_name}
+        result = self.parse_content("get_power", para)
+        return result
+
+    def get_project(self, **kwargs):
+        project_name = kwargs.pop("project_name", None)
+        para = {"name": project_name}
+        result = self.parse_content("get_project", para)
+        return result
+
+    def get_institution(self, **kwargs):
+        project_name = kwargs.pop("institution_name", None)
+        para = {"name": project_name}
+        result = self.parse_content("get_institutions", para)
+        return result
 # p = APIGetMethod(host="http://127.0.0.1:8000/api/")
 # print(p.get_output_sensors_by_platform("dal556", "2017-06-05 15:13:26"))
 # ob = p.get_deployments_by_general_model("slocum")
