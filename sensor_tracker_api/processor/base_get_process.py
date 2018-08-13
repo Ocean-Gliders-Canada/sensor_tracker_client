@@ -129,7 +129,7 @@ class BaseGetProcess(object):
         res = None
         power_json = self.APIGetter.get_power(power_name=power_name)
         if power_json:
-            res = self.__fetch_id(power_json[0])
+            res = self.__fetch_id(power_json)
         return res
 
     def get_project_id(self, project_name):
@@ -153,7 +153,7 @@ class BaseGetProcess(object):
         res = j[id]
         return res
 
-
+"""
 p = BaseGetProcess("http://127.0.0.1:8001/api/")
 n = p.get_institution_id("Dalhousie, Oceaanography")
 print(n)
@@ -161,3 +161,4 @@ print(n)
 # ob = p.get_deployments_by_general_model("slocum")
 # print(ob.to_dict())
 # print(p.get_instruments_on_platform_by_name("dal556").to_csv("/Users/xiang/Desktop/output/5.csv"))
+"""

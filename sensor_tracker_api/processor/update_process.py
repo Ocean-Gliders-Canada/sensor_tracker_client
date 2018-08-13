@@ -26,19 +26,18 @@ class UpdateProcess(PostProcess):
         header_checker_res = self.__header_check(content_type)
         if not header_checker_res:
             raise ValueError("The dataframe header doesn't meet requirement")
-        value_check_res = self.__value_type_check(content_type)
-        if not value_check_res:
-            raise ValueError("The dataframe header doesn't meet requirement")
 
         diff_value, new_value = self.__exist_check(content_type)
         diff_value, new_value, new_headers = self.__header_content_transform(content_type, diff_value, new_value)
         if new_value:
             for item in new_value:
+                #item = self.__value_type_check(content_type, item)
                 value = self.__generate_value(new_headers, item)
                 method = post_prefix + content_type
                 self.__callMethod(method, value)
         if diff_value:
             for item in diff_value:
+                #item = self.__value_type_check(content_type, item)
                 method = update_prefix + content_type
                 self.__callMethod(method, param=item)
 
@@ -88,12 +87,32 @@ class UpdateProcess(PostProcess):
         file_header = self.obj.header
         return compare_list(header, file_header)
 
-    def __value_type_check(self, checker_type):
+    def __value_type_check(self, checker_type, contents):
         """
         To be implement, the purpose of this method is check the value
         of type. If types are correct then return true, otherwise return false
         """
-        return True
+        value_type = Config.POST_VALUE_TYPE[checker_type]
+        new_content = []
+        l = len(contents)
+        for index in range(0, l):
+            content = contents[index]
+            t = type(content)
+            vt = value_type[index]
+            if t is not vt and content is not "":
+                if vt is "date":
+                    new_content.append(content)
+                elif vt is str:
+                    new_content.append(str(content))
+                elif vt is int:
+                    new_content.append(int(content))
+                elif vt is float:
+                    new_content.append(float(content))
+                else:
+                    new_content.append(content)
+            else:
+                new_content.append(content)
+        return new_content
 
     def __exist_check(self, check_type):
         """
@@ -103,10 +122,10 @@ class UpdateProcess(PostProcess):
         :param check_type:
         :return:
         """
-        unique_variable = Config.SEARCH_KEY[check_type]
+        search_variable = Config.SEARCH_KEY[check_type]
         search_key_index = []
         file_header = self.obj.header
-        for x in unique_variable:
+        for x in search_variable:
             i = file_header.index(x)
             search_key_index.append(i)
 
@@ -197,7 +216,8 @@ class UpdateProcess(PostProcess):
 
         return new_header
 
-
+"""
 a = UpdateProcess('/Users/xiang/Desktop/output/deployment.csv', host="http://127.0.0.1:8001/api/",
                   token='1537ded79296862c889ffe368b9decc3b9c2afe1')
 a.update_deployment()
+"""

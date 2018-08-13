@@ -74,7 +74,8 @@ class APIPostMethod(APIMethod):
         return payload
 
     def __get_payload(self, content):
-        return urllib.parse.urlencode(content).encode("utf-8")
+        ret = urllib.parse.urlencode(content).encode("utf-8")
+        return ret
 
 
 """

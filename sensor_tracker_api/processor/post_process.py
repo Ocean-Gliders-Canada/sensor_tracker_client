@@ -7,11 +7,11 @@ class PostProcess(object):
         self.reader = DataReader(path)
         self.host = host
         self.token = token
-        self.process = APIUpdateMethod(host=self.host, token=self.token)
+        self.binder = APIUpdateMethod(host=self.host, token=self.token)
         self.obj = self.reader.generate_obj()
 
     def post_deployment(self, *args, **kwargs):
-        self.process.post_deployment(kwargs)
+        self.binder.post_deployment(kwargs)
 
     def post_sensor(self):
         print("no thing will happen")

@@ -417,9 +417,6 @@ class AccessApi(object):
         else:
             return self.SensorTackerApi + type + '?' + urllib.parse.urlencode(arguments)
 
-    def validate_args(self, *args):
-        raise NotImplemented
-
     def remove_null_value(self, dict):
         for i, j in dict:
             if j is False:
@@ -427,17 +424,3 @@ class AccessApi(object):
 
         return dict
 
-
-api = AccessApi(debug=True)
-# b = api.get_platform_deployment("Fundy", "2018-05-17 16:02:26")
-# b = api.get_platform_type("Slocum")
-# print(b)
-# platform_type = api.parse_content("get_platform_type", {"model": "Slocum Glider G2"})
-# test = api.parse_content("get_platform", {"type":"Slocum Glider G3"})
-# print(test)
-
-# test = api.get_deployment_instruments("dal556", "2017-06-05 15:13:26")
-# est = api.get_deployment_instruments("dal556", "2017-06-05 15:13:26")
-test = api.parse_content("get_manufacturer", {})
-print(test)
-# print(test)
