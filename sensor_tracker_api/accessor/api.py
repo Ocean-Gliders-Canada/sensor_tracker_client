@@ -1,7 +1,7 @@
 #!python
 # coding=utf-8
 from sensor_tracker_api.config.config import Config
-from sensor_tracker_api.processor.get_process import Process
+
 from sensor_tracker_api.checker.args_checker import InputChecker
 
 
@@ -10,11 +10,11 @@ class AccessApi(object):
 
         if debug:
             self.DEBUG = True
-            self.SensorTackerApi = Config.SENSOR_TRACKER_LOCAL_URL
+            self.SensorTackerHost = Config.SENSOR_TRACKER_LOCAL_URL
             if host:
-                self.SensorTackerApi = host
+                self.SensorTackerHost = host
         else:
-            self.SensorTackerApi = Config.SENSOR_TRACKER_CONNECTOR
+            self.SensorTackerHost = Config.SENSOR_TRACKER_CONNECTOR
             self.DEBUG = False
 
         self.token = token
@@ -23,7 +23,6 @@ class AccessApi(object):
         self.password = password
         self.config = Config
         self.GLIDER_TYPES = self.config.GLIDER_TYPE
-        self.process = Process(self.SensorTackerApi)
         self.arg_check = InputChecker(Config)
 
     def set_authentication(self, content):

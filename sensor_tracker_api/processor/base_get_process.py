@@ -1,4 +1,3 @@
-import json
 from sensor_tracker_api.builder.simply_meta_data_factory import SimplyMetaDataFactory
 from sensor_tracker_api.binder.get_binder import APIGetMethod
 from sensor_tracker_api.config.config import Config

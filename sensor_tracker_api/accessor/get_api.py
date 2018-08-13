@@ -1,9 +1,11 @@
+from sensor_tracker_api.processor.get_process import Process
 from sensor_tracker_api.accessor.api import AccessApi
 
 
 class GetApi(AccessApi):
     def __init__(self, **kwargs):
         AccessApi.__init__(self, **kwargs)
+        self.process = Process(self.SensorTackerHost)
 
     def get_deployments(self, *args, **kwargs):
         """

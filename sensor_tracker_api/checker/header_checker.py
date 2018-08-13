@@ -1,0 +1,2 @@
+class HeaderChecker(object):
+    pass

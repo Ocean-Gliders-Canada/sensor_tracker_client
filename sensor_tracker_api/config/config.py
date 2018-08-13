@@ -7,7 +7,7 @@ class Config(PostConfig):
                               ("title",),
                               ("start_time",), ("end_time",), ("testing_mission",), ("comment",), ("acknowledgement",),
                               ("contributor_name",),
-                              ("creator_name",), ("contributor_role",), ("creator_email",), ("creator_name",),
+                              ("creator_name",), ("contributor_role",), ("creator_email",),
                               ("creator_url",),
                               ("institution", "name"), ("project", "name"),
                               ("data_repository_link",), ("publisher_email",),

@@ -25,7 +25,8 @@ class Parser(object):
         return self.header
 
     def __get_content(self, df):
-        header = self.__get_header(df)
-        subset = df[header]
+        df_with_None = df.where(df.notnull(), "")
+        header = self.__get_header(df_with_None)
+        subset = df_with_None[header]
         tuples = [tuple(x) for x in subset.values]
         return tuples
