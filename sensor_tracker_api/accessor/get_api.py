@@ -9,7 +9,7 @@ class GetApi(AccessApi):
 
     def get_deployments(self, *args, **kwargs):
         """
-        Input cloud be deployment number, or platform type or, platform name or platform name and start time
+        Input could be deployment number, platform type, platform name, or platform name and start time
 
         :param specific:
         :param para:
