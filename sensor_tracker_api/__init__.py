@@ -1,7 +1,5 @@
-"""
-Sensor Tracker API library
-"""
+from .sensor_tracker_api import SensorTrackerApi
 
-__version__ = '1.0.2'
-__author__ = 'Xiang Ling'
+sensor_tracker_api = SensorTrackerApi()
 
+del SensorTrackerApi
