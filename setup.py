@@ -1,4 +1,5 @@
 import re
+import os
 from setuptools import setup, find_packages
 
 VERSIONFILE = "sensor_tracker_api/__init__.py"
@@ -11,18 +12,26 @@ if mo:
 else:
     raise RuntimeError("Unable to find version string in %s." % (VERSIONFILE,))
 
-setup(name="tracker_api",
-      version=version,
-      description="library tool to interact with sensor_tracker database",
-      author="Xiang Ling",
-      author_email="",
-      url="https://gitlab.oceantrack.org/ceotr/metadata-tracker/tracker_api.git",
-      packages=find_packages(exclude=['tests']),
-      python_requires='>=3.5',
-      install_requires=[
-          "requests>=2.11.1",
-          "six>=1.10.0",
-          "pandas>=0.23.0",
-      ],
-      zip_safe=True
-      )
+
+def read(fname):
+    with open(os.path.join(os.path.dirname(__file__), fname)) as f:
+        return f.read()
+
+
+setup(
+    name="sensor_tracker_api",
+    version=version,
+    description="library tool to interact with sensor_tracker database",
+    author="Xiang Ling",
+    author_email="xiang.ling@dal.ca",
+    url="https://gitlab.oceantrack.org/ceotr/metadata-tracker/tracker_api",
+    packages=find_packages(exclude=['tests']),
+    python_requires='>=3.5',
+    long_description=read('README.md'),
+    install_requires=[
+        "requests==2.18.4",
+        "six==1.11.0",
+        "urllib3==1.22",
+    ],
+    zip_safe=True
+)
