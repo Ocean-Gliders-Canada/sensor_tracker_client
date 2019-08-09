@@ -11,6 +11,6 @@ class Setting(object):
     @property
     def HOST_URL(self):
         if self.DEBUG:
-            return self.LOCAL_HOST
+            return self.DEBUG_HOST
         else:
             return self.HOST
