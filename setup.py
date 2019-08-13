@@ -25,7 +25,7 @@ setup(
     author="Xiang Ling",
     author_email="xiang.ling@dal.ca",
     url="https://gitlab.oceantrack.org/ceotr/metadata-tracker/tracker_api",
-    packages=find_packages(exclude=['tests']),
+    packages=find_packages(exclude=['tests', 'script']),
     python_requires='>=3.5',
     long_description=read('README.md'),
     install_requires=[

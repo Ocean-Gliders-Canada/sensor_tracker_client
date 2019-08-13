@@ -54,3 +54,21 @@ def post_request_with_token(api_keyword, payload):
     except RequestException as e:
         raise RequestException(e)
     return r
+
+
+@request_error_catch
+def patch_request_with_token(api_keyword, target_obj_id, payload):
+    request_header = authentication.get_post_header()
+    url = api_keyword_to_url(api_keyword)
+    if not url.endswith("/"):
+        url = url + "/"
+    url = url + str(target_obj_id) + "/"
+    try:
+        r = requests.patch(url, payload, headers=request_header)
+    except ConnectionError as e:
+        raise ConnectionError(e)
+    except ReadTimeout as e:
+        raise ReadTimeout(e)
+    except RequestException as e:
+        raise RequestException(e)
+    return r

@@ -1,11 +1,11 @@
-from .connection import get_request, post_request_with_token, get_request_by_pk
+from .connection import get_request, post_request_with_token, get_request_by_pk, patch_request_with_token
 from .decorator import cache_it
 from .ResponseData import DataFactory
 
 GET = "get"
 POST = "post"
 DELETE = "delete"
-# PATCH = "patch"
+PATCH = "patch"
 PUT = "put"
 
 API_METHOD_INFO = [
@@ -28,7 +28,7 @@ API_METHOD_INFO = [
     },
     {
         "keyword": "instrument_on_platform",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "sensor",
@@ -96,6 +96,12 @@ class BaseAPIMethod:
         else:
             raise AttributeError("'{}' object has no attribute '{}'".format(self.__name__, 'post'))
 
+    def patch(self, *args, **kwargs):
+        if hasattr(self, "_patch"):
+            return self._patch(self, *args, **kwargs)
+        else:
+            raise AttributeError("'{}' object has no attribute '{}'".format(self.__name__, 'patch'))
+
     def delete(self, *args, **kwargs):
         if hasattr(self, "_delete"):
             return self._delete(self, *args, **kwargs)
@@ -115,6 +121,9 @@ def api_method_factory(api_info):
     def post(self, payload):
         return post_request_with_token(self.api_key_word, payload)
 
+    def patch(self, target_obj_id, payload):
+        return patch_request_with_token(self.api_key_word, target_obj_id, payload)
+
     i = BaseAPIMethod(api_info)
     i.__name__ = method_name
     for action in api_info["actions"]:
@@ -123,5 +132,8 @@ def api_method_factory(api_info):
 
         if POST is action:
             setattr(i, "_" + POST, post)
+
+        if PATCH is action:
+            setattr(i, "_" + PATCH, patch)
 
     return i
