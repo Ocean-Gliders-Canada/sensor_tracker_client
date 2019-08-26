@@ -1,10 +1,10 @@
 import copy
-
+from datetime import datetime
 from sensor_tracker_api import sensor_tracker_api as sta
 
 sta.basic.DEBUG = True
 # Todo: format check
-sta.basic.DEBUG_HOST = "http://glidertest.ocean.dal.ca:8001/"
+sta.basic.DEBUG_HOST = "http://127.0.0.1:8000/"
 sta.authentication.token = "1537ded79296862c889ffe368b9decc3b9c2afe1"
 
 
@@ -18,7 +18,14 @@ def platform_transfer(target_platform_name, new_platform_name, new_serial_number
     new_platform_dict["name"] = new_platform_name
     new_platform_dict["serial_number"] = new_serial_number
     sta.platform.post(new_platform_dict)
-    print(instrument_on_platform.dict)
+    the_instrument_on_platform_dict_list = instrument_on_platform.dict
+    new_platform_id = sta.platform.get({"name": new_platform_name}).dict[0]["id"]
+    for x in the_instrument_on_platform_dict_list:
+        if x["end_time"] is None:
+            sta.instrument_on_platform.patch(x["id"], {"end_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
+            sta.instrument_on_platform.post(
+                {"start_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "instrument": x["instrument"],
+                 "platform": new_platform_id})
 
 
 if __name__ == '__main__':

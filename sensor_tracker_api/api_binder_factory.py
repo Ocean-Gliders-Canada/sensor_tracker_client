@@ -1,6 +1,6 @@
 from .connection import get_request, post_request_with_token, get_request_by_pk, patch_request_with_token
 from .decorator import cache_it
-from .ResponseData import DataFactory
+from .response_data import DataFactory
 
 GET = "get"
 POST = "post"
