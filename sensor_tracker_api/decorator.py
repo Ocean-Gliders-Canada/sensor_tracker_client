@@ -8,7 +8,7 @@ from .cache import NO_ARGUMENT
 logger = logging.getLogger(__name__)
 
 
-def request_error_catch(func):
+def request_error_logging(func):
     """ The errors raise by request will be handler in here
 
     IF RAISE_REQUEST_ERROR = True
@@ -22,10 +22,8 @@ def request_error_catch(func):
         try:
             ret = func(*args, **kwargs)
         except RequestException as e:
-            if setting.RAISE_REQUEST_ERROR:
-                raise e
-            else:
-                logger.error(e)
+            logger.error(e)
+            raise e
         return ret
 
     return wrapper

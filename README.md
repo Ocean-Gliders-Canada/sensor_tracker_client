@@ -22,7 +22,7 @@ For starters, the library is using singleton pattern. The object will be instant
 
     >>> from sensor_tracker_api import sensor_tracker_api as sta
 
-Make sure to set up the basic configurations before using the other functions. It only needs to be configured once at the beginning of the script.
+Make sure to set up the basic configurations before using the other functions. It needs to be configured only once at the beginning of the script.
 
     >>> # Basic setup
     >>> sta.basic.DEBUG = True # Turn on the debug mode, the default is False
@@ -41,8 +41,17 @@ The sensor tracker api requires the use of token or username and password for PO
 
 To see if your credentials are successful:
 
+    >>> # To verify the username and password
+    >>> sta.authentication.username = "your_username"
+    >>> sta.authentication.password = "your_password"
+    >>> print(sta.authentication.is_username_and_password_valid())
     >>>
-
+    >>> # To verify the token
+    >>> sta.authentication.token = "your_token"
+    >>> try:
+    >>>     print(sta.authentication.token)
+    >>> except AuthenticationError:
+    >>>     print("token is incorrect")
 
 ### GET Operations
 
@@ -68,9 +77,9 @@ To fetch institutions with name OTN
 
 All GET operations will return a ``response_data`` object, which contains results and can be converted into
 different format such as dictionary
-
+   
     >>> institution_res_dict = institution_res.dict
-
+   
 ##### Project
 
 To fetch full list of project
@@ -209,11 +218,14 @@ To get full list of deployment comment
 
 ### POST Operations
 
+To create an new object on sensor tracker database
+
 The credential must be provided before using any POST operations otherwise it will throw an exception,
 POST operations' format is similar to GET operations
 
     res = sta.target_model.post({"a_data_file": "field_value"})
 
+### PUT Operations
 
 ### Author
 

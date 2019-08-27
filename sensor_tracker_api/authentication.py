@@ -2,12 +2,12 @@ import requests
 
 from requests.exceptions import ConnectionError, ReadTimeout, RequestException
 
-from .decorator import request_error_catch
+from .decorator import request_error_logging
 from .exceptions import AuthenticationError
 from .util import api_keyword_to_url
 
 
-@request_error_catch
+@request_error_logging
 def post_request(api_keyword, payload):
     url = api_keyword_to_url(api_keyword)
     try:
@@ -64,6 +64,8 @@ class Authentication:
 
     def get_post_header(self):
         return {'Authorization': "Token %s" % self.token}
+
+
 
 
 authentication = Authentication()
