@@ -216,7 +216,8 @@ POST operations' format is similar to GET operations
 
 
 ### Author
-    **[CEOTR DATA TEAM](http://ceotr.ocean.dal.ca)**
+
+[CEOTR data](http://ceotr.ocean.dal.ca)
 
 ### License
-This project
+[The License](./LICENSE.md)
