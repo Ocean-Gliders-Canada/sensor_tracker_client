@@ -1,10 +1,12 @@
+
 Sensor Tracker Api Library
 =============
 
 This library provides a pure Python interface for the Sensor Tracker Api
 
+
 Installing
-============
+----------
 
 Install through pip:
 
@@ -12,7 +14,7 @@ Install through pip:
 
 
 Usage Examples
-=============
+--------------
  
 The API is exposed via the ``sensor_tracker_api``  class.
 
@@ -211,7 +213,6 @@ The credential must be provided before using any POST operations otherwise it wi
 POST operations' format is similar to GET operations
 
     res = sta.target_model.post({"a_data_file": "field_value"})
-
 
 
 ### Author
