@@ -14,3 +14,13 @@ class Setting(object):
             return self.DEBUG_HOST
         else:
             return self.HOST
+
+    @property
+    def DEBUG_HOST(self):
+        return self._DEBUG_HOST
+
+    @DEBUG_HOST.setter
+    def DEBUG_HOST(self, url):
+        if not url.endswith("/"):
+            url = url + "/"
+        self._DEBUG_HOST = url

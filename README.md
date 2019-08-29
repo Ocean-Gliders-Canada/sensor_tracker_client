@@ -226,8 +226,10 @@ POST operations' format is similar to GET operations
     res = sta.target_model.post({"a_data_file": "field_value"})
 
 ### PUT Operations
-
+TBD
 ### Author
+
+![alt text](http://ceotrstg.ocean.dal.ca/static/images/logos/CEOTR-Logo-Port-sm.png?v=23"Logo Title Text 1")
 
 [CEOTR data](http://ceotr.ocean.dal.ca)
 

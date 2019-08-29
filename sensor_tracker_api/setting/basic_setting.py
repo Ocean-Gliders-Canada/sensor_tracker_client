@@ -1,6 +1,6 @@
 # Default server information
 HOST = "http://bugs.ocean.dal.ca/sensor_tracker/"
-DEBUG_HOST = "http://127.0.0.1:8000/"
+_DEBUG_HOST = "http://127.0.0.1:8000/"
 
 # Default cache setting
 CACHE_ON = False
