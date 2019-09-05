@@ -23,6 +23,23 @@ def get_request(api_keyword, payload):
 
 
 @request_error_logging
+def get_request_int(api_keyword, obj_id):
+    url = api_keyword_to_url(api_keyword)
+    if not url.endswith('/'):
+        url = url + '/'
+    url = url + str(obj_id) + "/"
+    try:
+        r = requests.get(url, timeout=(setting.CONNECT_TIMEOUT, setting.READ_TIMEOUT))
+    except ConnectionError as e:
+        raise ConnectionError(e)
+    except ReadTimeout as e:
+        raise ReadTimeout(e)
+    except RequestException as e:
+        raise RequestException(e)
+    return r
+
+
+@request_error_logging
 def get_request_by_pk(api_keyword, pk):
     url = api_keyword_to_url(api_keyword)
     if not url.endswith('/'):

@@ -1,4 +1,5 @@
-from .connection import get_request, post_request_with_token, get_request_by_pk, patch_request_with_token
+from .connection import get_request, post_request_with_token, get_request_by_pk, patch_request_with_token, \
+    get_request_int
 from .decorator import cache_it
 from .response_data import DataFactory
 
@@ -81,8 +82,8 @@ class BaseAPIMethod:
             # todo or here?
             if args:
                 payload = args[0]
-                payload["format"] = 'json'
-
+                if type(payload) is not int:
+                    payload["format"] = 'json'
             else:
                 payload = {"format": 'json'}
             args = (payload,)
@@ -114,8 +115,15 @@ def api_method_factory(api_info):
 
     @cache_it(api_info["keyword"])
     def get(self, payload=None):
-        # todo: make a input argument parser here?
-        r = get_request(self.api_key_word, payload)
+        type_of_payload = type(payload)
+        if type_of_payload is dict:
+            # todo: make a input argument parser here?
+            r = get_request(self.api_key_word, payload)
+        elif type_of_payload is int:
+            r = get_request_int(self.api_key_word, payload)
+        else:
+            msg = "Payload should be either dictionary or integer"
+            raise AttributeError(msg)
         return DataFactory(r).generate()
 
     def post(self, payload):

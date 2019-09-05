@@ -24,11 +24,18 @@ class ResponseData:
     @property
     def dict(self):
         if not hasattr(self, "_dict"):
-            self._dict = []
-            for a in self.raw:
-                status_code, data = a
-                if status_code == 200:
-                    self._dict.extend(data["results"])
+            if self.pages:
+                self._dict = []
+                for a in self.raw:
+                    status_code, data = a
+                    if status_code == 200:
+                        self._dict.extend(data["results"])
+            else:
+                self._dict = []
+                for a in self.raw:
+                    status_code, data = a
+                    if status_code == 200:
+                        self._dict.append(data)
         return self._dict
 
     @property
@@ -44,12 +51,18 @@ class DataFactory:
         new_data = ResponseData()
         response_json = self.response.json()
         new_data.raw = (self.response.status_code, response_json)
-        try:
-            if response_json["next"]:
-                new_data.pages = True
-                self._generate(response_json["next"], new_data)
-        except Exception as e:
+
+        if "next" in response_json:
+            new_data.pages = True
+            self._generate(response_json["next"], new_data)
+        elif len(response_json) == 1 and "detail" in response_json:
             raise AttributeError(response_json)
+        elif len(response_json):
+            new_data.pages = False
+        else:
+            msg = "api error {}".format(response_json)
+            raise AttributeError(msg)
+
         return new_data
 
     def _generate(self, url, data_obj):

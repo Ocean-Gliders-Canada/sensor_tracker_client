@@ -65,6 +65,8 @@ The usage format of get operation:
     response_data = stc.target_model.get()
     # For filter
     response_data = stc.target_model.get({"filter name":"filter value"})
+    # get object by pk
+    response_data = stc.target_model.get(pk)
 
 ##### Institutions
 
@@ -75,6 +77,10 @@ To fetch full list of institutions
 To fetch institutions with name OTN
 
     >>> institution_res2 = stc.institution.get({"name": "OTN"})
+    
+To fetch institution obj with primary key 1
+    
+    >>> institution_res3 = stc.institution.get(1)
 
 
 ##### Response data
@@ -93,6 +99,10 @@ To fetch full list of project
 To fetch project with name "Gulf of St. Lawrence Animal Tracking for OTN"
 
     >>> project_res2 = stc.project.get({"name": "Gulf of St. Lawrence Animal Tracking for OTN"})
+   
+To fetch project obj with primary key 1
+    
+    >>> project_res3 = stc.project.get(1)
 
 ##### Manufacturer
 
@@ -103,6 +113,10 @@ To fetch full list of manufacturers
 To fetch manufacturer with name "Teledyne Webb"
 
     >>> manufacturer_res2 = stc.manufacturer.get({"name": "Teledyne Webb"})
+    
+To fetch manufacturer obj with primary key 1
+    
+    >>> manufacturer_res3 = stc.manufacturer.get(1)
 
 ##### Instrument
 
@@ -123,6 +137,10 @@ To fetch instrument by deployment
     >>> instrument_res4 = stc.instrument.get({"platform_name": "otn200", "start_time": "2017-08-02 19:37:38"})
     >>> instrument_res5 = stc.instrument.get({"platform_name": "otn200", "start_time": "2017-08-02"})
 
+To fetch instrument obj with primary key 1
+    
+    >>> instrument_res6 = stc.instrument.get(1)
+    
 ##### Instrument_on_platform
 
 To fetch full list of instrument on platform
@@ -137,6 +155,11 @@ To fetch instrument on platform by instrument identifier
 
     >>> instrument_on_platform_res5 = stc.instrument_on_platform.get({"identifier": "c"})
 
+
+To fetch instrument_on_platform obj with primary key 1
+    
+    >>> instrument_on_platform_res6 = stc.instrument_on_platform.get(1)
+    
 ##### Sensor
 
 To fetch full list of sensor
@@ -159,6 +182,11 @@ Sensors can be filtered by platform or deployment
     >>> sensor_res4 = stc.sensor.get({"platform_name": "otn200"})
     >>> sensor_res5 = stc.sensor.get({"platform_name": "otn200", "start_time": "2017-08-02"})
 
+
+To fetch sensor obj with primary key 1
+    
+    >>> sensor_res6 = stc.sensor.get(1)
+    
 ##### Sensor on Instrument
 
 To fetch a full list of sensor_on_instrument
@@ -168,6 +196,10 @@ To fetch a full list of sensor_on_instrument
 To fetch sensor on instrument for a deployment
 
     >>> ret = stc.sensor_on_instrument.get({"platform_name": "otn200", "deployment_start_time": "2017-08-02 19:37:38"})
+
+To fetch sensor_on_instrument obj with primary key 1
+    
+    >>> sensor_on_instrument_res = stc.sensor_on_instrument.get(1)
 
 ##### platform type
 
@@ -184,6 +216,11 @@ By default, the given model name should be match the target platform name; alter
     >>> platform_type_res3 = stc.platform_type.get({"model": "slocum", "how": "contains"}) # return all platform type which model contains word "slocum", case in sensitive
     >>> platform_type_res4 = stc.platform_type.get({"model": "Slocum Glider G\d", "how": "regex"}) # return all platform types which model match the regular expression
 
+To fetch platform_type obj with primary key 1
+    
+    >>> platform_type5 = stc.platform_type.get(1)
+
+
 ###### Power
 
 To fetch the full list of power type
@@ -193,6 +230,10 @@ To fetch the full list of power type
 To filter sensor list by power name
 
     >>> power_res2 = stc.power.get({"name":"power_name"})
+    
+To fetch power obj with primary key 1
+    
+    >>> power3 = stc.power.get(1)
 
 ##### Deployment
 
@@ -209,6 +250,10 @@ To get the deployment by platform_type
     >>> deployment_res2 = stc.deployment.get({"model": "Slocum Glider G\d", "how": "regex"})
     >>> deployment_res3 = stc.deployment.get({"model": "Slocum", "how": "contains"})
 
+To fetch deployment obj with primary key 1
+    
+    >>> deployment4 = stc.deployment.get(1)
+    
 ##### Deployment comment
 
 To get full list of deployment comment
@@ -219,6 +264,11 @@ To get full list of deployment comment
     # user detail were hidden
     >>> deployment_comment = stc.deployment_comment.get({"platform_name": "dal556", "depth": 1})
     >>> deployment_comment_res2 = stc.deployment_comment.get({"platform_name": "dal556", "depth": 0})
+
+To fetch deployment_comment obj with primary key 1
+    
+    >>> deployment_comment3 = stc.deployment_comment.get(1)
+
 
 ### POST Operations
 
