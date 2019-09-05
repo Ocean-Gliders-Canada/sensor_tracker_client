@@ -44,9 +44,12 @@ class DataFactory:
         new_data = ResponseData()
         response_json = self.response.json()
         new_data.raw = (self.response.status_code, response_json)
-        if response_json["next"]:
-            new_data.pages = True
-            self._generate(response_json["next"], new_data)
+        try:
+            if response_json["next"]:
+                new_data.pages = True
+                self._generate(response_json["next"], new_data)
+        except Exception as e:
+            raise AttributeError(response_json)
         return new_data
 
     def _generate(self, url, data_obj):
