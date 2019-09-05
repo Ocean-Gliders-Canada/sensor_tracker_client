@@ -4,3 +4,6 @@ class AttributeCantChange(AttributeError):
 
 class AuthenticationError(Exception):
     pass
+
+class ServerIssue(Exception):
+    pass

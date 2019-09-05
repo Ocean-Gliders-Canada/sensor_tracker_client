@@ -1,6 +1,6 @@
 import copy
 from datetime import datetime
-from sensor_tracker_client import sensor_tracker_api as sta
+from sensor_tracker_client import sensor_tracker_client as sta
 
 sta.basic.DEBUG = True
 # Todo: format check

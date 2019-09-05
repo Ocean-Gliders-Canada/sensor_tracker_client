@@ -1,6 +1,8 @@
 import json
 import requests
 
+from .exceptions import ServerIssue
+
 
 class Datum:
     def __init__(self, raw_data, status_code):
@@ -49,7 +51,11 @@ class DataFactory:
 
     def generate(self):
         new_data = ResponseData()
-        response_json = self.response.json()
+        try:
+            response_json = self.response.json()
+        except Exception as e:
+            msg = "status code: {}\nurl: {}\nexception content: {}".format(self.response.status_code,  self.response.url, e)
+            raise ServerIssue(msg)
         new_data.raw = (self.response.status_code, response_json)
 
         if "next" in response_json:
