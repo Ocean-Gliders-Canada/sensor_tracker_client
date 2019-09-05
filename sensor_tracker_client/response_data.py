@@ -54,13 +54,16 @@ class DataFactory:
         try:
             response_json = self.response.json()
         except Exception as e:
-            msg = "status code: {}\nurl: {}\nexception content: {}".format(self.response.status_code,  self.response.url, e)
+            msg = "status code: {}\nurl: {}\nexception content: {}".format(self.response.status_code, self.response.url,
+                                                                           e)
             raise ServerIssue(msg)
         new_data.raw = (self.response.status_code, response_json)
 
         if "next" in response_json:
             new_data.pages = True
-            self._generate(response_json["next"], new_data)
+            the_next = response_json["next"]
+            if the_next:
+                self._generate(the_next, new_data)
         elif len(response_json) == 1 and "detail" in response_json:
             raise AttributeError(response_json)
         elif len(response_json):
