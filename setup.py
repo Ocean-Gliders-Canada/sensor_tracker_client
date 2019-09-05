@@ -24,7 +24,7 @@ setup(
     description="library tool to interact with sensor_tracker database",
     author="Xiang Ling",
     author_email="xiang.ling@dal.ca",
-    url="https://gitlab.oceantrack.org/ceotr/metadata-tracker/tracker_api",
+    url="https://gitlab.oceantrack.org/ceotr/metadata-tracker/sensor_tracker_client",
     packages=find_packages(exclude=['tests', 'script']),
     python_requires='>=3.5',
     long_description=read('README.md'),

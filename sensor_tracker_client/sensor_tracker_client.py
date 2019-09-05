@@ -14,7 +14,7 @@ def all_name():
     return the_name_list
 
 
-class SensorTrackerApi:
+class SensorTrackerClient:
     def __init__(self):
         make_api_methods(self, API_METHOD_INFO)
 
