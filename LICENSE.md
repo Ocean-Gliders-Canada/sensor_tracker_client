@@ -1,2 +1,2 @@
-sensor_tracker_api is licensed under Creative Commons Attribution-NonCommercial 4.0 International License for non-commercial
+sensor_tracker_client is licensed under Creative Commons Attribution-NonCommercial 4.0 International License for non-commercial
 use. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
