@@ -2,7 +2,7 @@ import re
 import os
 from setuptools import setup, find_packages
 
-VERSIONFILE = "sensor_tracker_api/__init__.py"
+VERSIONFILE = "sensor_tracker_client/__init__.py"
 ver_file = open(VERSIONFILE, "rt").read()
 VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
 mo = re.search(VSRE, ver_file, re.M)
