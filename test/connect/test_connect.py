@@ -1,7 +1,7 @@
 import unittest
-from sensor_tracker_api import sensor_tracker_api as sta
+from sensor_tracker_client import sensor_tracker_api as sta
 
-from sensor_tracker_api.authentication import authentication
+from sensor_tracker_client.authentication import authentication
 
 
 class TestConnect(unittest.TestCase):

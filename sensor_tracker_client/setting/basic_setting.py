@@ -6,7 +6,7 @@ _DEBUG_HOST = "http://127.0.0.1:8000/"
 CACHE_ON = False
 
 # Default Request setting
-CONNECT_TIMEOUT = 0.1
+CONNECT_TIMEOUT = 1
 READ_TIMEOUT = 9
 
 RAISE_REQUEST_ERROR = False
