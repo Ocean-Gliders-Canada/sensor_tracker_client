@@ -19,7 +19,7 @@ def read(fname):
 
 
 setup(
-    name="sensor_tracker_api",
+    name="sensor_tracker_client",
     version=version,
     description="library tool to interact with sensor_tracker database",
     author="Xiang Ling",
