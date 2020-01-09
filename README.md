@@ -279,8 +279,15 @@ POST operations' format is similar to GET operations
 
     res = stc.target_model.post({"a_data_file": "field_value"})
 
-### PUT Operations
-TBD
+### PATCH Operations
+PATCH is used for "modify" capabilities. The PATCH request only needs to contain the changes to the resource, not the complete resource
+
+patch operation is available for institution, project, manufacturer, instrument, instrument_on_platform, sensor, platform_type, platform, power,
+deployment, sensor_on_instrument
+
+usage format:
+sta.target_model.patch(instance_id, content_dict)
+
 ### Author
 
 ![alt text](http://ceotrstg.ocean.dal.ca/static/images/logos/CEOTR-Logo-Port-sm.png?v=23)

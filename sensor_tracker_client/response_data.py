@@ -1,6 +1,6 @@
 import json
 import requests
-
+import csv
 from .exceptions import ServerIssue
 
 
@@ -43,6 +43,18 @@ class ResponseData:
     @property
     def json(self):
         return json.dumps(self.dict)
+
+    def to_csv(self, output_file_path):
+        with open(output_file_path, 'w') as f:
+            csvwriter = csv.writer(f)
+            if self.dict:
+                csvwriter.writerow(self.dict[0].keys())
+                for x in self.dict:
+                    csvwriter.writerow(x.values())
+
+    def to_json(self, output_file_path):
+        with open(output_file_path, 'w') as f:
+            f.write(self.json)
 
 
 class DataFactory:

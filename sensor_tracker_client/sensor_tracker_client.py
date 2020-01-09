@@ -18,6 +18,7 @@ class SensorTrackerClient:
     def __init__(self):
         make_api_methods(self, API_METHOD_INFO)
 
+
     @property
     def basic(self):
         return setting

@@ -13,19 +13,19 @@ API_METHOD_INFO = [
     {
         "name": "institution",
         "keyword": "institution/",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "project",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "manufacturer",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "instrument",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "instrument_on_platform",
@@ -33,23 +33,23 @@ API_METHOD_INFO = [
     },
     {
         "keyword": "sensor",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "platform_type",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "platform",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "power",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "deployment",
-        "actions": [GET, POST]
+        "actions": [GET, POST, PATCH]
     },
     {
         "keyword": "deployment_comment",
@@ -61,7 +61,7 @@ API_METHOD_INFO = [
     },
     {
         "keyword": "sensor_on_instrument",
-        "actions": [GET]
+        "actions": [GET, POST, PATCH]
     }
 ]
 
@@ -79,7 +79,6 @@ class BaseAPIMethod:
 
     def get(self, *args, **kwargs):
         if hasattr(self, "_get"):
-            # todo or here?
             if args:
                 payload = args[0]
                 if type(payload) is not int:
@@ -102,12 +101,12 @@ class BaseAPIMethod:
             return self._patch(self, *args, **kwargs)
         else:
             raise AttributeError("'{}' object has no attribute '{}'".format(self.__name__, 'patch'))
-
-    def delete(self, *args, **kwargs):
-        if hasattr(self, "_delete"):
-            return self._delete(self, *args, **kwargs)
-        else:
-            raise AttributeError("'{}' object has no attribute '{}'".format(self, 'delete'))
+    #
+    # def delete(self, *args, **kwargs):
+    #     if hasattr(self, "_delete"):
+    #         return self._delete(self, *args, **kwargs)
+    #     else:
+    #         raise AttributeError("'{}' object has no attribute '{}'".format(self, 'delete'))
 
 
 def api_method_factory(api_info):
