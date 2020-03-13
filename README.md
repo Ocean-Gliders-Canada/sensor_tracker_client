@@ -286,7 +286,8 @@ patch operation is available for institution, project, manufacturer, instrument,
 deployment, sensor_on_instrument
 
 usage format:
-sta.target_model.patch(instance_id, content_dict)
+
+    sta.target_model.patch(instance_id, {"a_data_file": "field_value"})
 
 ### Author
 
