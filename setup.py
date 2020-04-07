@@ -25,7 +25,7 @@ setup(
     author="Xiang Ling",
     author_email="xiang.ling@dal.ca",
     url="https://gitlab.oceantrack.org/ceotr/metadata-tracker/sensor_tracker_client",
-    packages=find_packages(exclude=['tests', 'script']),
+    packages=find_packages(exclude=['tests', 'script', "tools"]),
     python_requires='>=3.5',
     long_description=read('README.md'),
     install_requires=[
