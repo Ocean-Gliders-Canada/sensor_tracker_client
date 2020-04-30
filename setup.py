@@ -29,7 +29,7 @@ setup(
     python_requires='>=3.5',
     long_description=read('README.md'),
     install_requires=[
-        "requests==2.18.4",
+        "requests==2.20.0",
         "six==1.11.0",
         "urllib3==1.22",
     ],
