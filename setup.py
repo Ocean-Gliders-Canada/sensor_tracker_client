@@ -31,7 +31,7 @@ setup(
     install_requires=[
         "requests==2.18.4",
         "six==1.11.0",
-        "urllib3==1.22",
+        "urllib3==1.24.2",
     ],
     zip_safe=True
 )
